@@ -45,18 +45,32 @@ function App() {
         <color attach="background" args={["#ececec"]} />
         <Experience />
       </View>
-      <View
+      <div
         style={{
           position: "fixed",
           width: "320px",
           height: "320px",
+          borderRadius: "1rem",
+          overflow: "hidden",
           top: 16,
           left: 16,
           boxShadow: "0 0 10px rgba(0,0,0,0.5)",
         }}
       >
-        <Minimap />
-      </View>
+        <View
+          style={{
+            position: "fixed",
+            width: "320px",
+            height: "320px",
+            borderRadius: "1rem",
+            overflow: "hidden",
+            top: 16,
+            left: 16,
+          }}
+        >
+          <Minimap />
+        </View>
+      </div>
     </KeyboardControls>
   );
 }

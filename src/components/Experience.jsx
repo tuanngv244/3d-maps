@@ -16,10 +16,7 @@ export const maps = {
     scale: 20,
     position: [-15, -1, 10],
   },
-  city_scene_tokyo: {
-    scale: 0.72,
-    position: [0, -1, -3.5],
-  },
+
   de_dust_2_with_real_light: {
     scale: 0.3,
     position: [-5, -3, 13],
@@ -34,7 +31,7 @@ export const maps = {
   },
   vietnamese_village__drone_3d_scan: {
     scale: 5,
-    position: [0, 0, 0],
+    position: [-5, -5, 6],
   },
 };
 
@@ -42,7 +39,7 @@ export const Experience = () => {
   const shadowCameraRef = useRef();
   useControls("Map", {
     map: {
-      value: "vietnamese_village__drone_3d_scan",
+      value: "animal_crossing_map",
       options: Object.keys(maps),
       onChange: (value) => {
         GameState.map = value;

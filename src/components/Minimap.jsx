@@ -52,7 +52,7 @@ export const Minimap = () => {
     }
   });
 
-  const profileTexture = useTexture("textures/wawa.jpg");
+  const profileTexture = useTexture("textures/boy.jpeg");
 
   return (
     <>

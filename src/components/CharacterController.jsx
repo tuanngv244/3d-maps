@@ -50,6 +50,10 @@ export const CharacterController = () => {
 
   const [animation, setAnimation] = useState("idle");
   const [isGrounded, setIsGrounded] = useState(true);
+  const [isJumping, setIsJumping] = useState(false);
+  const [jumpCount, setJumpCount] = useState(0);
+  const maxJumps = 2; // Allow double jump
+  // ...existing code...
 
   const characterRotationTarget = useRef(0);
   const rotationTarget = useRef(0);
@@ -90,21 +94,35 @@ export const CharacterController = () => {
         z: 0,
       };
 
+      //NOTE: forward
       if (get().forward) {
         movement.z = 1;
       }
 
-      if (get().jump && isGrounded) {
-        vel.y = JUMP_FORCE;
-        setIsGrounded(false);
-        setAnimation("jump");
-      }
+      //NOTE: backward
       if (get().backward) {
         movement.z = -1;
       }
 
-      if (vel.y < 0.1 && vel.y > -0.1) {
+      //NOTE: jump
+      if (get().jump && jumpCount < maxJumps) {
+        vel.y = JUMP_FORCE;
+        setIsGrounded(false);
+        setIsJumping(true);
+        setJumpCount((prev) => prev + 1);
+        setAnimation("jump");
+
+        if (get().run) {
+          movement.z = 1;
+        }
+      }
+      if (vel.y <= 0 && isJumping) {
+        setIsJumping(false);
+      }
+
+      if (vel.y < 0.1 && vel.y > -0.1 && !isJumping) {
         setIsGrounded(true);
+        setJumpCount(0); // Reset jump count when grounded
       }
 
       let speed = get().run ? RUN_SPEED : WALK_SPEED;
@@ -119,9 +137,12 @@ export const CharacterController = () => {
         }
       }
 
+      //NOTE: move left
       if (get().left) {
         movement.x = 1;
       }
+
+      //NOTE: move right
       if (get().right) {
         movement.x = -1;
       }
