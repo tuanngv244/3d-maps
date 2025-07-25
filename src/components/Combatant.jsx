@@ -20,13 +20,14 @@ export function Combatant({ animation, ...props }) {
   }, [animation]);
 
   return (
-    <group {...props} dispose={null}>
-      <group rotation={[-Math.PI / 2, 0, 0]}>
+    <group ref={group} {...props} dispose={null}>
+      <group name="Scene" rotation={[-Math.PI / 2, 0, 0]}>
         <mesh
           geometry={nodes.Object_2.geometry}
           material={materials.Accessoires}
         />
         <mesh geometry={nodes.Object_3.geometry} material={materials.Arms} />
+
         <mesh geometry={nodes.Object_4.geometry} material={materials.Chest} />
         <mesh geometry={nodes.Object_5.geometry} material={materials.Coat} />
         <lineSegments
