@@ -8,6 +8,7 @@ import { degToRad } from "three/src/math/MathUtils.js";
 import { GameState } from "../App";
 import { Character } from "./Character";
 import { Combatant } from "./Combatant";
+import { StarLantern } from "./StarLantern";
 
 const normalizeAngle = (angle) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
@@ -206,6 +207,7 @@ export const CharacterController = () => {
         <group ref={cameraPosition} position-y={4} position-z={-4} />
         <group ref={character}>
           <Character scale={0.18} position-y={-0.25} animation={animation} />
+          {/* <StarLantern scale={0.18} position-y={-0.25} animation={animation} /> */}
           {/* <Combatant scale={0.5} position-y={-0.25} animation={animation} /> */}
         </group>
       </group>

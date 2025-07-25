@@ -9,6 +9,10 @@ export const GameState = proxy({
   map: "castle_on_hills",
   characterPosition: new Vector3(0, 0, 0),
   containerRotation: 0,
+  score: 0,
+  health: 100,
+  inventory: [],
+  currentQuest: null,
 });
 
 const keyboardMap = [
@@ -48,9 +52,8 @@ function App() {
       <div
         style={{
           position: "fixed",
-          width: "320px",
-          height: "320px",
-          borderRadius: "1rem",
+          width: "200px",
+          height: "200px",
           overflow: "hidden",
           top: 16,
           left: 16,
@@ -60,8 +63,8 @@ function App() {
         <View
           style={{
             position: "fixed",
-            width: "320px",
-            height: "320px",
+            width: "200px",
+            height: "200px",
             borderRadius: "1rem",
             overflow: "hidden",
             top: 16,
