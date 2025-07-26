@@ -7,26 +7,65 @@ Source: https://sketchfab.com/3d-models/star-lantern-098d775b197f44fe91f8c6d3ab9
 Title: star Lantern
 */
 
+import { GameState } from "@/App";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { AnimationAction, Group, Object3DEventMap } from "three";
+import { useSnapshot } from "valtio";
+import { Vector3 } from "three";
+import { coreFuns } from "@/utils/core";
 
-const StarLantern = ({ animation, ...props }) => {
-  const group = useRef();
+const StarLantern = ({ animation, starId, ...props }) => {
+  const group = useRef<Group<Object3DEventMap> | null>(null);
   const { nodes, materials, animations } = useGLTF("/models/star_lantern.glb");
   const { actions } = useAnimations(animations, group);
   const rotationSpeed = useRef(Math.random() * 0.5 + 0.2); // Random speed 0.2-0.7
+  const [isCollected, setIsCollected] = useState(false);
+  const { characterPosition, collectedStars, map } = useSnapshot(GameState);
 
   useEffect(() => {
-    actions["idle"]?.actions[animation]?.reset().fadeIn(0.24).play();
-    return () => actions?.[animation]?.fadeOut(0.24);
-  }, [animation]);
-
+    if (animation && actions?.[animation]) {
+      actions[animation]?.reset().fadeIn(0.24).play();
+      return () => {
+        actions?.[animation]?.fadeOut(0.24);
+      };
+    }
+  }, [animation, actions]);
+  // Auto-rotation and collision detection
   useFrame((state, delta) => {
-    if (group.current) {
-      // group.current.rotation.y += delta * rotationSpeed.current;
+    if (group.current && !isCollected) {
+      // Rotate the star
+      group.current.rotation.y += delta * rotationSpeed.current;
+
+      // Floating animation
+      group.current.position.y =
+        props.position[1] + Math.sin(state.clock.elapsedTime * 2) * 0.3;
+
+      // Check collision with character
+      if (characterPosition) {
+        const starPos = new Vector3().copy(group.current.position);
+        const charPos = characterPosition;
+        const distance = starPos.distanceTo(charPos);
+
+        if (distance < 2) {
+          // Collision distance
+          coreFuns.collectStar(starId, map);
+          setIsCollected(true);
+        }
+      }
     }
   });
+
+  useEffect(() => {
+    if (collectedStars.has(starId)) {
+      setIsCollected(true);
+    }
+  }, [collectedStars, starId]);
+
+  // Don't render if collected
+  if (isCollected) return null;
+
   return (
     <group {...props} ref={group} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]} scale={6.089}>

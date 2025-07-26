@@ -49,7 +49,6 @@ const MainCharacter = () => {
   const character = useRef();
 
   const [animation, setAnimation] = useState("idle");
-  const [isGrounded, setIsGrounded] = useState(true);
   const [isJumping, setIsJumping] = useState(false);
   const [jumpCount, setJumpCount] = useState(0);
   const maxJumps = 2; // Allow double jump
@@ -107,7 +106,6 @@ const MainCharacter = () => {
       //NOTE: jump
       if (get().jump && jumpCount < maxJumps) {
         vel.y = JUMP_FORCE;
-        setIsGrounded(false);
         setIsJumping(true);
         setJumpCount((prev) => prev + 1);
         setAnimation("jump");
@@ -121,7 +119,6 @@ const MainCharacter = () => {
       }
 
       if (vel.y < 0.1 && vel.y > -0.1 && !isJumping) {
-        setIsGrounded(true);
         setJumpCount(0); // Reset jump count when grounded
       }
 

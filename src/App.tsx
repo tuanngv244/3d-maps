@@ -3,9 +3,8 @@ import { Canvas } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { proxy } from "valtio";
 import { Experience } from "./components/Experience";
-import Minimap from "./components/Minimap/index";
-import UserControl from "./components/HeadControl";
 import HeadControl from "./components/HeadControl";
+import Minimap from "./components/Minimap";
 
 export const GameState = proxy({
   map: "castle_on_hills",
@@ -15,7 +14,16 @@ export const GameState = proxy({
   health: 100,
   inventory: [],
   starCollected: 5,
-  totalStar: 20,
+  totalStar: 25,
+  gameStatus: "playing", // "playing", "winner", "gameOver"
+  collectedStars: new Set(), // Track collected star IDs
+  mapStars: {
+    castle_on_hills: { collected: 0, total: 4 },
+    animal_crossing_map: { collected: 0, total: 4 },
+    de_dust_2_with_real_light: { collected: 0, total: 4 },
+    medieval_fantasy_book: { collected: 0, total: 4 },
+    vietnamese_village__drone_3d_scan: { collected: 0, total: 4 },
+  },
 });
 
 const keyboardMap = [
