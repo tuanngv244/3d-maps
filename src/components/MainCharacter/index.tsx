@@ -5,10 +5,8 @@ import { useControls } from "leva";
 import { useEffect, useRef, useState } from "react";
 import { MathUtils, Vector3 } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
-import { GameState } from "../App";
+import { GameState } from "../../App.tsx";
 import { Character } from "./Character";
-import { Combatant } from "./Combatant";
-import { StarLantern } from "./StarLantern";
 
 const normalizeAngle = (angle) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
@@ -31,7 +29,7 @@ const lerpAngle = (start, end, t) => {
   return normalizeAngle(start + (end - start) * t);
 };
 
-export const CharacterController = () => {
+const MainCharacter = () => {
   const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED, JUMP_FORCE } = useControls(
     "Character Control",
     {
@@ -215,3 +213,4 @@ export const CharacterController = () => {
     </RigidBody>
   );
 };
+export default MainCharacter;

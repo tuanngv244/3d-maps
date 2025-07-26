@@ -3,7 +3,9 @@ import { Canvas } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { proxy } from "valtio";
 import { Experience } from "./components/Experience";
-import { Minimap } from "./components/Minimap";
+import Minimap from "./components/Minimap/index";
+import UserControl from "./components/HeadControl";
+import HeadControl from "./components/HeadControl";
 
 export const GameState = proxy({
   map: "castle_on_hills",
@@ -12,7 +14,8 @@ export const GameState = proxy({
   score: 0,
   health: 100,
   inventory: [],
-  currentQuest: null,
+  starCollected: 5,
+  totalStar: 20,
 });
 
 const keyboardMap = [
@@ -49,31 +52,7 @@ function App() {
         <color attach="background" args={["#ececec"]} />
         <Experience />
       </View>
-      <div
-        style={{
-          position: "fixed",
-          width: "200px",
-          height: "200px",
-          overflow: "hidden",
-          top: 16,
-          left: 16,
-          boxShadow: "0 0 10px rgba(0,0,0,0.5)",
-        }}
-      >
-        <View
-          style={{
-            position: "fixed",
-            width: "200px",
-            height: "200px",
-            borderRadius: "1rem",
-            overflow: "hidden",
-            top: 16,
-            left: 16,
-          }}
-        >
-          <Minimap />
-        </View>
-      </div>
+      <HeadControl />
     </KeyboardControls>
   );
 }

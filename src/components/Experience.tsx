@@ -1,46 +1,21 @@
 import { Environment, OrthographicCamera } from "@react-three/drei";
+// @ts-ignore
 import { Physics } from "@react-three/rapier";
 import { useControls } from "leva";
 import { useRef } from "react";
 import { useSnapshot } from "valtio";
 import { GameState } from "../App";
-import { CharacterController } from "./CharacterController";
+import MainCharacter from "./MainCharacter";
 import { Map } from "./Map";
-import { StarLanternManager } from "./StarLanternManager";
+import StarLanternManager from "./Star/StarLanternManager";
+import { MAP_CONFIGS } from "@/constants/general";
 
-export const maps = {
-  castle_on_hills: {
-    scale: 3,
-    position: [-6, -7, 0],
-    randomPoint: 5,
-  },
-  animal_crossing_map: {
-    scale: 20,
-    position: [-15, -1, 10],
-    randomPoint: 5,
-  },
-  de_dust_2_with_real_light: {
-    scale: 0.3,
-    position: [-5, -3, 13],
-    randomPoint: 3,
-  },
-  medieval_fantasy_book: {
-    scale: 0.4,
-    position: [-4, 0, -6],
-    randomPoint: 3,
-  },
-  vietnamese_village__drone_3d_scan: {
-    scale: 0.5,
-    position: [-2, -20, 10],
-    randomPoint: 4,
-  },
-};
 export const Experience = () => {
-  const shadowCameraRef = useRef();
+  const shadowCameraRef = useRef<any>(null);
   useControls("Map", {
     map: {
       value: "animal_crossing_map",
-      options: Object.keys(maps),
+      options: Object.keys(MAP_CONFIGS),
       onChange: (value) => {
         GameState.map = value;
       },
@@ -72,16 +47,16 @@ export const Experience = () => {
       </directionalLight>
       <Physics key={map}>
         <Map
-          scale={maps[map].scale}
-          position={maps[map].position}
+          scale={MAP_CONFIGS[map]?.scale}
+          position={MAP_CONFIGS[map]?.position}
           model={`models/${map}.glb`}
         />
         <StarLanternManager
           key={map} // Re-generate lanterns when map changes
-          points={maps[map].randomPoint}
-          position={maps[map].position}
+          position={MAP_CONFIGS[map]?.position}
+          map={map}
         />
-        <CharacterController />
+        <MainCharacter />
       </Physics>
     </>
   );

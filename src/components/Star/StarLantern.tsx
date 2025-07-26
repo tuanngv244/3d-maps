@@ -11,7 +11,7 @@ import { useAnimations, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
 
-export function StarLantern({ animation, ...props }) {
+const StarLantern = ({ animation, ...props }) => {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF("/models/star_lantern.glb");
   const { actions } = useAnimations(animations, group);
@@ -24,7 +24,7 @@ export function StarLantern({ animation, ...props }) {
 
   useFrame((state, delta) => {
     if (group.current) {
-      group.current.rotation.y += delta * rotationSpeed.current;
+      // group.current.rotation.y += delta * rotationSpeed.current;
     }
   });
   return (
@@ -42,6 +42,6 @@ export function StarLantern({ animation, ...props }) {
       </group>
     </group>
   );
-}
-
+};
+export default StarLantern;
 useGLTF.preload("/models/star_lantern.glb");

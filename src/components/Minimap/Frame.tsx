@@ -9,12 +9,12 @@ import { useControls } from "leva";
 import { useRef } from "react";
 import { Vector3 } from "three";
 import { useSnapshot } from "valtio";
-import { GameState } from "../App";
-import { maps } from "./Experience";
+import { GameState } from "../../App";
+import { MAP_CONFIGS } from "@/constants/general";
 
 const tmpVector = new Vector3();
 
-export const Minimap = () => {
+const Frame = () => {
   const { map, characterPosition } = useSnapshot(GameState);
   const { autorotateCamera, zoomLevel } = useControls("Minimap 🗺️", {
     autorotateCamera: true,
@@ -24,7 +24,7 @@ export const Minimap = () => {
       value: 12,
     },
   });
-  const character = useRef();
+  const character = useRef<any>(null);
 
   useFrame(({ camera }) => {
     if (characterPosition) {
@@ -75,10 +75,12 @@ export const Minimap = () => {
         </mesh>
       </group>
       <Gltf
-        scale={maps[map].scale}
-        position={maps[map].position}
+        scale={MAP_CONFIGS[map].scale}
+        position={MAP_CONFIGS[map].position}
         src={`models/${map}.glb`}
       />
     </>
   );
 };
+
+export default Frame;
